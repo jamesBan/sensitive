@@ -1,0 +1,36 @@
+store_dirver: mongo
+
+mongo_dirver:
+    host: 10.0.0.10
+    port: 27017
+    name: yiyou
+    table: yiyou_filter
+    username: test
+    password: 1232
+    timeout: 1
+
+#mysql_dirver:
+    # host: 10.0.0.10
+    # port: 27017
+    # name: yiyou
+    # table: yiyou_filter
+    # username: test
+    # password: 1232
+
+#postgres_dirver:
+    # host: 10.0.0.10
+    # port: 27017
+    # name: yiyou
+    # table: yiyou_filter
+    # username: test
+    # password: 1232
+
+filter: jieba
+jieba_filter:
+    dict: dict
+
+interval: 60
+
+server:
+  - host: 0.0.0.0
+  - port: 9511
