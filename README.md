@@ -1,12 +1,12 @@
-#敏感词过滤服务
+# 敏感词过滤服务
 
 
-##原理
+## 原理
 传统的trie-tree过滤系统容易误判一些容易引起歧义的词语。
 利用结巴分词技术，添加敏感词为自定义字库。每次文本分词后检查是否为自定义词组，符合自定义词组的即为敏感词。
 
 
-##web服务
+## web服务
 ```go
 package main
 
@@ -182,7 +182,7 @@ func createFilter() (filter2.Filter, error) {
 }
 ```
 
-###RPC服务
+### RPC服务
 
 ```go
 package main
