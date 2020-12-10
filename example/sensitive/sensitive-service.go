@@ -2,9 +2,9 @@ package main
 
 import (
 	"time"
-	"sensitive"
-	filter2 "sensitive/filter"
-	store2 "sensitive/store"
+	"github.com/jamesBan/sensitive"
+	filter2 "github.com/jamesBan/sensitive/filter"
+	store2 "github.com/jamesBan/sensitive/store"
 	"fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"

@@ -1,4 +1,4 @@
-package sensitive
+package github.com/jamesBan/sensitive/sensitive
 
 import (
 	"sensitive/store"

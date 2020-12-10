@@ -1,13 +1,14 @@
-package filter
+package github.com/jamesBan/sensitive/filter
 
 import (
 	"fmt"
-	"os"
-	"log"
+	"github.com/pkg/errors"
 	"github.com/yanyiwu/gojieba"
+	"log"
+	"os"
+	"sensitiveService/store"
 	"strings"
 	"unicode/utf8"
-	"sensitive/store"
 )
 
 const WORD_SPPECH = "mg"
@@ -21,7 +22,22 @@ type Jieba struct {
 	jieba         *gojieba.Jieba
 }
 
-func NewJiebaFilter(dictPath, hmmPath, userDictPath, idfPath, stopWordsPath string) (Filter) {
+func NewJiebaFilter(dictPath, hmmPath, userDictPath, idfPath, stopWordsPath string) (Filter, error) {
+
+	files := []string{
+		dictPath,
+		hmmPath,
+		userDictPath,
+		idfPath,
+		stopWordsPath,
+	}
+
+	for _, file := range files {
+		if err := checkFileExists(file); err != nil {
+			return nil, err
+		}
+	}
+
 	j := &Jieba{
 		dictPath:      dictPath,
 		hmmPath:       hmmPath,
@@ -32,7 +48,15 @@ func NewJiebaFilter(dictPath, hmmPath, userDictPath, idfPath, stopWordsPath stri
 
 	j.updateGojieba()
 
-	return j
+	return j, nil
+}
+
+func checkFileExists(file string) error {
+	if _, err := os.Stat(file); err != nil {
+		return errors.Errorf("error:%s", err)
+	}
+
+	return nil
 }
 
 func (j *Jieba) updateGojieba() {
@@ -61,17 +85,17 @@ func (j *Jieba) updateDict(wordChannel <-chan string) error {
 	return nil
 }
 
-func (c *Jieba) Find(content string) ([]string) {
+func (c *Jieba) Find(content string) []string {
 	words, _ := c.checkWord(content, false, "*")
 	return words
 }
 
-func (c *Jieba) Replace(content string, replace string) (string) {
+func (c *Jieba) Replace(content string, replace string) string {
 	_, content = c.checkWord(content, true, replace)
 	return content
 }
 
-func (c *Jieba) UpdateAll(s store.Store) () {
+func (c *Jieba) UpdateAll(s store.Store) {
 	c.updateDict(s.ReadAll())
 	c.updateGojieba()
 }
@@ -96,12 +120,12 @@ func (j *Jieba) checkWord(content string, isReplace bool, replace string) ([]str
 }
 
 //格式化单词
-func (j *Jieba) formatCustomWord(word string) (string) {
+func (j *Jieba) formatCustomWord(word string) string {
 	return fmt.Sprintf("%s 10 %s", word, WORD_SPPECH)
 }
 
 func (j *Jieba) isBadWord(word string) bool {
-	return strings.HasSuffix(word, "/"+WORD_SPPECH);
+	return strings.HasSuffix(word, "/"+WORD_SPPECH)
 }
 
 func (j *Jieba) getRealWord(word string) string {

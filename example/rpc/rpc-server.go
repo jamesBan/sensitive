@@ -1,4 +1,4 @@
-package rpc
+package github.com/jamesBan/sensitive/rpc
 
 import (
 	hrpc "github.com/hprose/hprose-golang/rpc"
@@ -6,7 +6,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"log"
 	"reflect"
-	"sensitive"
+	"github.com/jamesBan/sensitive"
 	"time"
 )
 

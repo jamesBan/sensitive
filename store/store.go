@@ -1,4 +1,4 @@
-package store
+package github.com/jamesBan/sensitive/store
 
 type Store interface {
 	Write(word string) error
