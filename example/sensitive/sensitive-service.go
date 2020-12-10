@@ -1,17 +1,17 @@
 package main
 
 import (
-	"time"
-	"github.com/jamesBan/sensitive"
-	filter2 "github.com/jamesBan/sensitive/filter"
-	store2 "github.com/jamesBan/sensitive/store"
 	"fmt"
-	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/gookit/config"
 	"github.com/gookit/config/yaml"
-	"os"
+	"github.com/jamesBan/sensitive"
+	filter2 "github.com/jamesBan/sensitive/filter"
+	store2 "github.com/jamesBan/sensitive/store"
 	"github.com/pkg/errors"
+	"net/http"
+	"os"
+	"time"
 )
 
 type wordForm struct {
@@ -103,7 +103,9 @@ func main() {
 		})
 	})
 
-	r.Run(":9512")
+	if err := r.Run(":9512"); err != nil {
+		panic(err)
+	}
 }
 
 func loadConfig() {
@@ -128,14 +130,14 @@ func createManager() *sensitive.Manager {
 		os.Exit(1)
 	}
 
-	interval := config.Int64("interval", 60)
+	interval, _ := config.Int64("interval")
 	return sensitive.NewManager(store, filter, time.Duration(interval)*time.Second)
 }
 
 func createStore() (store2.Store, error) {
-	driver := config.String("store_dirver")
+	driver, _ := config.String("store_dirver")
 	if driver == "mongo" {
-		mongoConfig := config.StringMap("mongo_dirver")
+		mongoConfig, _ := config.StringMap("mongo_dirver")
 		dsn := fmt.Sprintf("mongodb://%s:%s@%s:%s/%s", mongoConfig["user"], mongoConfig["password"], mongoConfig["host"], mongoConfig["port"], mongoConfig["name"])
 		store, err := store2.NewMongoStore(dsn, mongoConfig["name"], mongoConfig["table"], time.Second)
 		if err != nil {
@@ -149,14 +151,14 @@ func createStore() (store2.Store, error) {
 }
 
 func createFilter() (filter2.Filter, error) {
-	filerName := config.String("filter")
+	filerName, _ := config.String("filter")
 	if filerName == "jieba" {
 		pwd, err := os.Getwd()
 		if err != nil {
 			return nil, err
 		}
 
-		jiebaConfig := config.StringMap("jieba_filter")
+		jiebaConfig, _ := config.StringMap("jieba_filter")
 		dictPath := jiebaConfig["jieba_filter"]
 
 		return filter2.NewJiebaFilter(
@@ -165,7 +167,7 @@ func createFilter() (filter2.Filter, error) {
 			pwd+"/"+dictPath+"/user.dict.utf8",
 			pwd+"/"+dictPath+"/idf.utf8",
 			pwd+"/"+dictPath+"/stop_words.utf8",
-		), nil
+		)
 	}
 
 	return nil, errors.New("error filter name")

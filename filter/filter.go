@@ -1,6 +1,6 @@
-package github.com/jamesBan/sensitive/filter
+package filter
 
-import "sensitiveService/store"
+import "github.com/jamesBan/sensitive/store"
 
 type Filter interface {
 	Find(content string) (words []string)

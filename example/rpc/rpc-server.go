@@ -1,12 +1,12 @@
-package github.com/jamesBan/sensitive/rpc
+package rpc
 
 import (
 	hrpc "github.com/hprose/hprose-golang/rpc"
 	rpc "github.com/hprose/hprose-golang/rpc/fasthttp"
+	"github.com/jamesBan/sensitive"
 	"github.com/valyala/fasthttp"
 	"log"
 	"reflect"
-	"github.com/jamesBan/sensitive"
 	"time"
 )
 

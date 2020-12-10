@@ -1,4 +1,4 @@
-package github.com/jamesBan/sensitive/store
+package store
 
 import (
 	"gorm.io/gorm"

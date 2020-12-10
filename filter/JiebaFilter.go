@@ -1,12 +1,12 @@
-package github.com/jamesBan/sensitive/filter
+package filter
 
 import (
 	"fmt"
+	"github.com/jamesBan/sensitive/store"
 	"github.com/pkg/errors"
 	"github.com/yanyiwu/gojieba"
 	"log"
 	"os"
-	"sensitiveService/store"
 	"strings"
 	"unicode/utf8"
 )

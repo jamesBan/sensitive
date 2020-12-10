@@ -1,9 +1,9 @@
-package github.com/jamesBan/sensitive/filter
+package filter
 
 import (
 	"bytes"
 	"github.com/eachain/aca"
-	"sensitiveService/store"
+	"github.com/jamesBan/sensitive/store"
 	"sort"
 	"unicode/utf8"
 )

@@ -1,30 +1,29 @@
-package github.com/jamesBan/sensitive/sensitive
+package sensitive
 
 import (
-	"sensitive/store"
-	"sensitive/filter"
-	"time"
+	"github.com/jamesBan/sensitive/filter"
+	"github.com/jamesBan/sensitive/store"
 	"sync"
+	"time"
 )
 
 type Manager struct {
-	store store.Store
-	filter filter.Filter
-	version uint64
-	locker sync.RWMutex
+	store    store.Store
+	filter   filter.Filter
+	version  uint64
+	locker   sync.RWMutex
 	interval time.Duration
 }
 
-
-func (m *Manager) GetFilter() (filter.Filter)  {
+func (m *Manager) GetFilter() filter.Filter {
 	return m.filter
 }
 
-func (m *Manager) GetStore()(store.Store) {
+func (m *Manager) GetStore() store.Store {
 	return m.store
 }
 
-func (m *Manager) checkVersion()  {
+func (m *Manager) checkVersion() {
 	time.AfterFunc(m.interval, func() {
 		if m.store.Version() > m.version {
 			m.locker.Lock()
@@ -38,11 +37,11 @@ func (m *Manager) checkVersion()  {
 	})
 }
 
-func NewManager(store store.Store, filter filter.Filter, interval time.Duration)(*Manager) {
+func NewManager(store store.Store, filter filter.Filter, interval time.Duration) *Manager {
 	manager := &Manager{
-		store:store,
-		filter:filter,
-		version:0,
+		store:    store,
+		filter:   filter,
+		version:  0,
 		interval: interval,
 	}
 
