@@ -9,7 +9,6 @@ require (
 	github.com/hprose/hprose-golang v2.0.6+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/valyala/fasthttp v1.18.0
-	github.com/yanyiwu/gojieba v1.1.2
 	go.mongodb.org/mongo-driver v1.4.4
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/gorm v1.20.8
