@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"sync"
@@ -84,6 +85,24 @@ func (s *MongoStore) Remove(word string) error {
 
 	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
 	_, err := s.mongoCollection.DeleteOne(ctx, bson.M{"value": word})
+	if err != nil {
+		return err
+	}
+
+	s.locker.Lock()
+	defer s.locker.Unlock()
+	s.mongoVersion++
+
+	return nil
+}
+
+func (s *MongoStore) RemoveById(id string) error {
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	_, err = s.mongoCollection.DeleteOne(ctx, bson.M{"_id": objectId})
 	if err != nil {
 		return err
 	}

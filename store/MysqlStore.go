@@ -3,7 +3,6 @@ package store
 import (
 	"gorm.io/gorm"
 	"sync"
-	"time"
 )
 import "gorm.io/driver/mysql"
 
@@ -18,8 +17,8 @@ type MysqlStore struct {
 type FilterWord struct {
 	Id   int64
 	Word string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt int
+	UpdatedAt int
 }
 
 func NewMysqlStore(dsn string, tableName string) (*MysqlStore, error) {
@@ -48,7 +47,17 @@ func (s *MysqlStore) Write(word string) error {
 }
 
 func (s *MysqlStore) Remove(word string) error {
-	result := s.mysqlClient.Table(s.tableName).Delete("word", word)
+	result := s.mysqlClient.Table(s.tableName).Where("word = ?", word).Delete(&FilterWord{})
+	if result.Error != nil {
+		s.locker.Lock()
+		defer s.locker.Unlock()
+		s.MysqlVersion++
+	}
+	return result.Error
+}
+
+func (s *MysqlStore)RemoveById(id string) error  {
+	result := s.mysqlClient.Table(s.tableName).Where("id = ?", id).Delete(&FilterWord{})
 	if result.Error != nil {
 		s.locker.Lock()
 		defer s.locker.Unlock()
