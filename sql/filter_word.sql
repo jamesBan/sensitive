@@ -25,6 +25,7 @@ CREATE TABLE `filter_word` (
   `id` int NOT NULL AUTO_INCREMENT,
   `word` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_at` int(10) unsigned NOT NULL,
+  `updated_at` int(10)unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='敏感词';
 

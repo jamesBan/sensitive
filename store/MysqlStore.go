@@ -19,6 +19,7 @@ type FilterWord struct {
 	Id   int64
 	Word string
 	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func NewMysqlStore(dsn string, tableName string) (*MysqlStore, error) {
