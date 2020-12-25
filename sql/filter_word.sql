@@ -24,7 +24,8 @@ DROP TABLE IF EXISTS `filter_word`;
 CREATE TABLE `filter_word` (
   `id` int NOT NULL AUTO_INCREMENT,
   `word` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `created_at` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=223049 DEFAULT CHARSET=utf8 COMMENT='敏感词';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='敏感词';
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -3,6 +3,7 @@ package store
 import (
 	"gorm.io/gorm"
 	"sync"
+	"time"
 )
 import "gorm.io/driver/mysql"
 
@@ -17,6 +18,7 @@ type MysqlStore struct {
 type FilterWord struct {
 	Id   int64
 	Word string
+	CreatedAt time.Time
 }
 
 func NewMysqlStore(dsn string, tableName string) (*MysqlStore, error) {
